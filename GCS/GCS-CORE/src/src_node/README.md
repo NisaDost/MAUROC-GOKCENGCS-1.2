@@ -1,4 +1,4 @@
-# testNode
+# src_node
 
 Edit `ros2cs.spec` to include ROS 2 interface packages you wish to use.
 

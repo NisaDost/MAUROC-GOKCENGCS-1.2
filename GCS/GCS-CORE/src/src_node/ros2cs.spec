@@ -6,7 +6,7 @@ output ./Interfaces
 internal
 
 # Set the default root namespace.
-namespace testNode
+namespace src_node
 
 # Read packages from ament prefix directories as specified by AMENT_PREFIX_PATH.
 # If this flag specified, it will always load before all other from-directory directives.
