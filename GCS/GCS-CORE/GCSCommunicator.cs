@@ -1,52 +1,39 @@
-using System;
 using Rcl;
+using Rcl.Graph;
 using Rcl.Logging;
-using Rosidl.Messages.StdMsgs;
+using Rcl.Parameters;
+using Rosidl.Messages.Std;
+using System;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace GCS_CORE
 {
-    public class GCSCommunicator
+    public class TargetUavPublisher : IDisposable
     {
-        private readonly Node _node;
+        private readonly RosNode _node;
         private readonly IPublisher<Int32> _publisher;
-        private readonly ISubscription<Int32> _subscriber;
 
-        public GCSCommunicator()
+        public TargetUavPublisher()
         {
-            // Initialize RCL
-            RclContext.Init();
-            _node = new Node("gcs_node");
+            // ROS2 düðümü oluþtur
+            _node = new RosNode("gcs_target_uav_publisher");
 
-            // Publisher
-            _publisher = _node.CreatePublisher<Int32>("gcs/target_uav_id");
+            // Publisher oluþtur, /gcs/target_uav_id topic'ini yayýnlayacak
+            _publisher = _node.CreatePublisher<Int32>("/gcs/target_uav_id");
 
-            // Subscriber
-            _subscriber = _node.CreateSubscription<Int32>("gcs/target_uav_id", msg =>
-            {
-                Console.WriteLine($"[Subscriber] Received UAV ID: {msg.Data}");
-            });
-
-            Console.WriteLine("[GCS] Publisher & Subscriber initialized.");
+            Console.WriteLine("Target UAV ID Publisher started.");
         }
 
-        public void PublishUAVId(int uavId)
+        public void Publish(int uavId)
         {
-            _publisher.Publish(new Int32 { Data = uavId });
-            Console.WriteLine($"[Publisher] Sent UAV ID: {uavId}");
-        }
-
-        public async Task SpinAsync()
-        {
-            Console.WriteLine("[GCS] Spinning ROS 2 Node...");
-            await _node.SpinAsync();
+            var msg = new Int32 { Data = uavId };
+            _publisher.Publish(msg);
+            Console.WriteLine($"Published UAV ID: {uavId}");
         }
 
         public void Dispose()
         {
             _publisher.Dispose();
-            _subscriber.Dispose();
             _node.Dispose();
         }
     }
