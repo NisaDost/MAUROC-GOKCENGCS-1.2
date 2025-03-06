@@ -5,14 +5,14 @@ namespace node
 {
     class Program
     {
-        public static async void Main(string[] args)
+        public static void Main(string[] args)
         {
-            await using var context = new RclContext(args);
+            using var context = new RclContext(args);
             using var node = context.CreateNode("my_ros2_node");
-            var sub = node.CreateSubscription<Std.String>(String.Empty);
 
+            // Setup subscriptions, publishers, etc. here if needed.
             node.Logger.LogInformation($"Hello ROS 2 {RosEnvironment.Distribution}!");
+
         }
     }
-
 }
