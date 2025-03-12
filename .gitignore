@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/GCS/GCS-UI/apiKeys.json
+/GCS/GCS-UI/Resources/apiKeys.json

@@ -1,24 +1,27 @@
-﻿using System.Text;
+﻿using Microsoft.Web.WebView2.Core;
+using System;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GCS_UI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            InitializeWebView();
+        }
+
+        private async void InitializeWebView()
+        {
+            // Ensure WebView2 is initialized
+            await MapWebView.EnsureCoreWebView2Async(null);
+
+            // Example: Navigate to a local HTML file (e.g., MapPage.html) in your project
+            string tempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory).Split("bin")[0];
+            string htmlPath = Path.Combine(tempPath, "Resources", "MapPage.html");
+            MapWebView.CoreWebView2.Navigate(htmlPath);
         }
     }
 }

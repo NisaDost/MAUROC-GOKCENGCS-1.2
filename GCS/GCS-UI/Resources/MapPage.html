@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Clamped Google Map - Adana Airport</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <!-- Load the Google Maps JavaScript API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=${APIKEY}"></script>
+    <script>
+        let map;
+
+        // Define the bounding box
+        const strictBounds = new google.maps.LatLngBounds(
+            { lat: 36.970, lng: 35.270 }, // SW corner
+            { lat: 36.995, lng: 35.300 }  // NE corner
+        );
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 36.98280864628263, lng: 35.283394942193546 }, // Adana Airport
+                zoom: 15,
+                maxZoom: 20,
+                minZoom: 14.5,
+                streetViewControl: false,
+                fullscreenControl: false,
+                mapId: "14fe97b47aa60e85"
+            });
+
+            // Listen for drag/zoom events to clamp the map
+            map.addListener("dragend", clampToBounds);
+            map.addListener("zoom_changed", clampToBounds);
+        }
+
+        function clampToBounds() {
+            // If center is within the strict bounds, do nothing
+            if (strictBounds.contains(map.getCenter())) {
+                return;
+            }
+            // Otherwise, clamp the center back to the nearest point within bounds
+            const c = map.getCenter();
+            let lat = c.lat();
+            let lng = c.lng();
+
+            const minLat = strictBounds.getSouthWest().lat();
+            const minLng = strictBounds.getSouthWest().lng();
+            const maxLat = strictBounds.getNorthEast().lat();
+            const maxLng = strictBounds.getNorthEast().lng();
+
+            if (lat < minLat) lat = minLat;
+            if (lat > maxLat) lat = maxLat;
+            if (lng < minLng) lng = minLng;
+            if (lng > maxLng) lng = maxLng;
+
+            map.setCenter(new google.maps.LatLng(lat, lng));
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <div id="map"></div>
+</body>
+</html>

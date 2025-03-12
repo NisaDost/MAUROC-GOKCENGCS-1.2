@@ -4,8 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GCS_UI"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
-        Title="Ground Control Station" Height="800" Width="1200">
+        Title="Ground Control Station"
+        Height="800"
+        Width="1200">
+
+    <!-- Styles and Resources -->
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="{StaticResource BackgroundLightBrush}" />
@@ -30,34 +35,24 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <DockPanel >
-        <!-- Araç Çubuğu -->
+
+    <DockPanel>
+        <!-- Top Toolbar -->
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource PrimaryBrush}">
             <Button Content="Sistem" Margin="12 5 3 5" Padding="5,1" />
             <Button Content="Pencere" Margin="3 5" Padding="5,1" />
             <Button Content="Hakkında" Margin="3 5" Padding="5,1" />
         </StackPanel>
 
-        <!-- Sol Sidebar -->
-        <StackPanel DockPanel.Dock="Left" Width="200">
-            <Button Content="Start Talker" Margin="5" Click="StartTalker_Click"/>
-            <Button Content="Stop Talker" Margin="5" Click="StopTalker_Click"/>
-
-
-            <Button Content="Start Listener" Margin="5" Click="StartListener_Click" />
-            <Button Content="Stop Listener" Margin="5" Click="StopListener_Click" />
+        <!-- Left Sidebar -->
+        <StackPanel DockPanel.Dock="Left" Width="200" HorizontalAlignment="Left">
+            <Button Content="Latitude: " Margin="5"/>
+            <Button Content="Longtitude: " Margin="5"/>
         </StackPanel>
 
-        <Grid Height="288" Width="453">
-
-            <TextBox Name="TalkerOutputTextBox" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
-
-        </Grid>
-        <Grid Height="288" Width="453">
-
-            <TextBox Name="ListenerOutputTextBox" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
-
-        </Grid>
+        <!-- The remaining area (the "blue square" region) for the WebView2 -->
+        <wv2:WebView2 x:Name="MapWebView"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" />
     </DockPanel>
 </Window>
-
