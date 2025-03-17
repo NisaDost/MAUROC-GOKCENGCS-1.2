@@ -46,8 +46,8 @@
 
         <!-- Left Sidebar -->
         <StackPanel DockPanel.Dock="Left" Width="200" HorizontalAlignment="Left">
-            <Button Content="Latitude: " Margin="5"/>
-            <Button Content="Longtitude: " Margin="5"/>
+            <Button Content="Create Route" Margin="5" Click="DrawRouteButton_Click"/>
+            <Button Content="Clear Route" Margin="5" Click="ClearRouteButton_Click"/>
         </StackPanel>
 
         <!-- The remaining area (the "blue square" region) for the WebView2 -->

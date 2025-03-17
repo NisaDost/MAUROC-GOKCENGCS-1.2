@@ -1,72 +1,59 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Clamped Google Map - Adana Airport</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <div id="map" style="width: 100%; height: 100vh;"></div>
 
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-    <!-- Load the Google Maps JavaScript API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2lom6vs5uoshC8anXrG_K9lL35u09GcY"></script>
     <script>
-        let map;
 
-        // Define the bounding box
-        const strictBounds = new google.maps.LatLngBounds(
-            { lat: 36.970, lng: 35.270 }, // SW corner
-            { lat: 36.995, lng: 35.300 }  // NE corner
-        );
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 36.98280864628263, lng: 35.283394942193546 }, // Adana Airport
-                zoom: 15,
-                maxZoom: 20,
-                minZoom: 14.5,
-                streetViewControl: false,
-                fullscreenControl: false,
-                mapId: "14fe97b47aa60e85"
-            });
+        let map = L.map('map').setView([39.9255, 32.8663], 6); // Center map (Ankara, Turkey)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
 
-            // Listen for drag/zoom events to clamp the map
-            map.addListener("dragend", clampToBounds);
-            map.addListener("zoom_changed", clampToBounds);
+        let waypoints = [];
+        let routeLayer = null;
+
+        // Add waypoint on click
+        function addWaypoint(lat, lng) {
+            let marker = L.marker([lat, lng]).addTo(map);
+            waypoints.push([lat, lng]);
+            console.log("Waypoint added:", lat, lng);
         }
 
-        function clampToBounds() {
-            // If center is within the strict bounds, do nothing
-            if (strictBounds.contains(map.getCenter())) {
+        // Draw route connecting waypoints
+        function drawRoute() {
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+            }
+            if (waypoints.length < 2) {
+                alert("At least two waypoints are required to create a route.");
                 return;
             }
-            // Otherwise, clamp the center back to the nearest point within bounds
-            const c = map.getCenter();
-            let lat = c.lat();
-            let lng = c.lng();
-
-            const minLat = strictBounds.getSouthWest().lat();
-            const minLng = strictBounds.getSouthWest().lng();
-            const maxLat = strictBounds.getNorthEast().lat();
-            const maxLng = strictBounds.getNorthEast().lng();
-
-            if (lat < minLat) lat = minLat;
-            if (lat > maxLat) lat = maxLat;
-            if (lng < minLng) lng = minLng;
-            if (lng > maxLng) lng = maxLng;
-
-            map.setCenter(new google.maps.LatLng(lat, lng));
+            routeLayer = L.polyline(waypoints, { color: 'blue' }).addTo(map);
+            console.log("Route drawn.");
         }
+
+        // Expose functions to WebView2 (C# can call these)
+        window.external.receiveMessage = function (command, lat, lng) {
+            if (command === "addWaypoint") {
+                addWaypoint(lat, lng);
+            } else if (command === "drawRoute") {
+                drawRoute();
+            }
+        };
+
+        // Enable adding waypoints by clicking on the map
+        map.on('click', function (e) {
+            addWaypoint(e.latlng.lat, e.latlng.lng);
+        });
     </script>
-</head>
-<body onload="initMap()">
-    <div id="map"></div>
 </body>
 </html>
