@@ -48,7 +48,10 @@ namespace GCS_UI.View
 
         private void ClearRouteButton_Click(object sender, RoutedEventArgs e)
         {
-            ClearRoute();
+            if (MapWebView?.CoreWebView2 != null)
+            {
+                MapWebView.CoreWebView2.ExecuteScriptAsync("clearRoute();");
+            }
         }
     }
 }

@@ -11,19 +11,19 @@
     <div id="map" style="width: 100%; height: 100vh;"></div>
 
     <script>
-
-
         let map = L.map('map').setView([39.9255, 32.8663], 6); // Center map (Ankara, Turkey)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
         let waypoints = [];
+        let markers = [];
         let routeLayer = null;
 
         // Add waypoint on click
         function addWaypoint(lat, lng) {
             let marker = L.marker([lat, lng]).addTo(map);
+            markers.push(marker); // Store marker for later removal
             waypoints.push([lat, lng]);
             console.log("Waypoint added:", lat, lng);
         }
@@ -41,12 +41,31 @@
             console.log("Route drawn.");
         }
 
+        // Clear waypoints and route
+        function clearRoute() {
+            waypoints = []; // Reset waypoint array
+
+            // Remove all markers from the map
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = []; // Reset marker array
+
+            // Remove the drawn route
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+                routeLayer = null;
+            }
+
+            console.log("Route and waypoints cleared.");
+        }
+
         // Expose functions to WebView2 (C# can call these)
         window.external.receiveMessage = function (command, lat, lng) {
             if (command === "addWaypoint") {
                 addWaypoint(lat, lng);
             } else if (command === "drawRoute") {
                 drawRoute();
+            } else if (command === "clearRoute") {  // Exposed to WebView2
+                clearRoute();
             }
         };
 
