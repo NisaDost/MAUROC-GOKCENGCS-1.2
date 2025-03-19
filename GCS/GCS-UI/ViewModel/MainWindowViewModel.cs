@@ -3,11 +3,11 @@ using GCS_UI.Services;
 
 namespace GCS_UI.ViewModel
 {
-    public class MainViewModel
+    public class MainWindowViewModel
     {
         public NavigationService Navigation { get; }
 
-        public MainViewModel(NavigationService navigation)
+        public MainWindowViewModel(NavigationService navigation)
         {
             Navigation = navigation;
         }

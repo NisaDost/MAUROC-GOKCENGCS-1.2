@@ -4,7 +4,7 @@ using GCS_UI.View;
 
 namespace GCS_UI.ViewModel
 {
-    public class LoginViewModel
+    public class LoginPageViewModel
     {
         private readonly NavigationService _navigation;
         private readonly AuthService _authService = new AuthService();
@@ -13,7 +13,7 @@ namespace GCS_UI.ViewModel
         public string Password { get; set; }
         public RelayCommand LoginCommand { get; }
 
-        public LoginViewModel(NavigationService navigation)
+        public LoginPageViewModel(NavigationService navigation)
         {
             _navigation = navigation;
             LoginCommand = new RelayCommand(ExecuteLogin);
