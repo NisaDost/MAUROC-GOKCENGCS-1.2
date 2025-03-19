@@ -6,9 +6,19 @@
     <title>Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        /* Set map container to fill the entire viewport inside WebView2 */
+        body, html, #map {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+    </style>
 </head>
 <body>
-    <div id="map" style="width: 100%; height: 100vh;"></div>
+    <div id="map"></div>
 
     <script>
         let map = L.map('map').setView([39.9255, 32.8663], 6); // Center map (Ankara, Turkey)

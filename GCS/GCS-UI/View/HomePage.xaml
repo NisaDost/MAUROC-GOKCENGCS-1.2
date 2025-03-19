@@ -1,29 +1,34 @@
 ﻿<Page x:Class="GCS_UI.View.HomePage"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GCS_UI"
-        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-        mc:Ignorable="d"
-        Title="Ground Control Station"
-        Height="800"
-        Width="1200">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:local="clr-namespace:GCS_UI"
+      xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+      mc:Ignorable="d"
+      Title="Ground Control Station"
+      Height="1080"
+      Width="1920"
+      Background="{StaticResource BackgroundDarkBrush}">
 
     <!-- Styles and Resources -->
     <Page.Resources>
         <Style TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource BackgroundLightBrush}" />
-            <Setter Property="Foreground" Value="{StaticResource LightTextBrush}" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Padding" Value="5,1" />
+            <Setter Property="Background" Value="{StaticResource SecondaryBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextLightBrush}" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border 
-                            Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}"
                             Padding="{TemplateBinding Padding}"
                             CornerRadius="5">
                             <ContentPresenter 
@@ -37,22 +42,22 @@
     </Page.Resources>
 
     <DockPanel>
-        <!-- Top Toolbar -->
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource PrimaryBrush}">
-            <Button Content="Sistem" Margin="12 5 3 5" Padding="5,1" />
-            <Button Content="Pencere" Margin="3 5" Padding="5,1" />
-            <Button Content="Hakkında" Margin="3 5" Padding="5,1" />
+        <!-- Top Toolbar with new color -->
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource AltPrimaryBrush}" Height="50">
+            <Button Content="Sistem" Margin="8 4" />
+            <Button Content="Görev" Margin="8 4" />
+            <Button Content="Pencere" Margin="8 4" />
+            <Button Content="Hakkında" Margin="8 4" />
         </StackPanel>
 
         <!-- Left Sidebar -->
-        <StackPanel DockPanel.Dock="Left" Width="200" HorizontalAlignment="Left">
-            <Button Content="Create Route" Margin="5" Click="DrawRouteButton_Click"/>
-            <Button Content="Clear Route" Margin="5" Click="ClearRouteButton_Click"/>
+        <StackPanel DockPanel.Dock="Left" Width="220" Background="{StaticResource BackgroundLightBrush}" HorizontalAlignment="Left">
+            <Button Content="Create Route" Background="{StaticResource SuccessBrush}" Click="DrawRouteButton_Click"/>
+            <Button Content="Clear Route" Background="{StaticResource DangerBrush}" Click="ClearRouteButton_Click"/>
         </StackPanel>
 
-        <!-- The remaining area (the "blue square" region) for the WebView2 -->
+        <!-- Main map area with WebView2 stretched to fit -->
         <wv2:WebView2 x:Name="MapWebView"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch" />
+                      />
     </DockPanel>
 </Page>

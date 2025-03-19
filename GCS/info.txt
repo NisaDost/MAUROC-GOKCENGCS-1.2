@@ -13,6 +13,6 @@ Creating and running nodes:
 	call C:\dev\ros2_humble\local_setup.bat
 8- Run "dotnet run" on DCP, while being in the node directory.
 
-Do not forget to add "Interfaces" namespace in every node. (no need since we only use one node.)
+//Do not forget to add "Interfaces" namespace in every node. (no need since we only use one node.)
 
 
